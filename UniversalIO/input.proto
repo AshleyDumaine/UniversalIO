@@ -1,0 +1,80 @@
+// A message for keyboard input
+message KeyboardInput {
+	optional int32 keyCode = 1; // required (a keyword avoided by practice)
+}
+
+// A message for Emotiv EPOC/EPOC+ input
+message EmotivEEGInput {
+enum CognitiveActionType {
+	PUSH = 0;
+	PULL = 1;
+	LIFT = 2;
+	DROP = 3;
+	LEFT = 4;
+	RIGHT = 5;
+	ROTATELEFT = 6;
+	ROTATERIGHT = 7;
+	ROTATECLOCKWISE = 8;
+	ROTATECOUNTERCLOCKWISE = 9;
+	ROTATEFORWARDS = 10;
+	ROTATEREVERSE = 11;
+	DISAPPEAR = 12;
+}
+
+message CognitiveAction {
+	optional CognitiveActionType cognitiveAction = 1; // required
+	optional float power = 2; // required
+}
+
+enum FacialExpressionType {
+	BLINK = 0;
+	LEFTWINK = 1;
+	RIGHTWINK = 2;
+	LOOKINGLEFT = 3;
+	LOOKINGRIGHT = 4;
+	LOOKINGDOWN = 5;
+	LOOKINGUP = 6;
+	EYESOPEN = 7;
+	CLENCH = 8;
+	SMILE = 9;
+	EYEBROWRAISE = 10;
+}
+
+message FacialExpression {
+	optional FacialExpressionType expression = 1; // required
+	optional float value = 2; // use 1.0 or 0.0 for boolean expressions (1 - 7)
+}
+
+enum AffectiveActionType {
+	FRUSTRATION = 0;
+	MEDITATION = 1;
+	ENAGEMENTBOREDOM = 2;
+	EXCITEMENTLONGTERM = 3;
+	EXCITEMENTSHORTTERM = 4;
+}
+
+message Mood {
+	optional AffectiveActionType affectiveAction = 1; // required
+	optional float extent = 2; // required
+}
+
+message GyroData {
+	optional float xValue = 1; // required
+	optional float yValue = 2; // required
+}
+	
+	optional CognitiveAction mentalCommand = 1; // one mental command at a time
+	optional FacialExpression expression = 2; // currently can’t do combo expressions
+	repeated Mood affectiveArray = 3; // can have multiple affective types and values
+	optional GyroData gyroData = 4;
+	optional float batteryPercent = 5;
+	// add more headset data here as needed...
+}
+
+// A message for joystick input
+message JoystickInput {
+	optional float xValue = 1; // required
+	optional float yValue = 2; // required
+}
+
+// Add more input messages here as needed...

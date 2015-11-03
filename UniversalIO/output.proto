@@ -1,0 +1,27 @@
+// A message for controlling an LED
+message LEDOutput {
+	optional bool on = 1; // required
+}
+
+// A message for controlling a A.R. Drone
+message DroneOutput {
+	enum CommandType {
+		TURN = 0;
+		FORWARD = 1;
+		LIFT = 2;
+		LIFTOFF = 3;
+		LAND = 4;
+		FLIP = 5;
+	}
+	
+message Command {
+		repeated CommandType commandType = 1;
+		optional float speed = 2; // required
+	}
+}
+
+// A message for controlling a game action
+message GameActionOutput {
+	repeated float axes = 1;
+	repeated float rawData = 2;
+}
