@@ -17,6 +17,8 @@ public class EEGServer implements Runnable {
 	private static HashMap<String, Function<Pointer, Number>> expressivMap = new HashMap<String, Function<Pointer, Number>>();
 	public static void main(String[] args) throws Exception {
 		// same as run()
+		EEGServer self = new EEGServer();
+		self.run();
 	}
 
 	public static HashMap<Integer, String> getCogntivMap() {
@@ -137,7 +139,6 @@ public class EEGServer implements Runnable {
 							// Log the EmoState if it has been updated
 							if (eventType == Edk.EE_Event_t.EE_EmoStateUpdated.ToInt()) {
 								Edk.INSTANCE.EE_EmoEngineEventGetEmoState(eEvent, eState);
-
 								for (Entry<String, Function<Pointer, Number>> entry : expressivMap.entrySet()) {
 									if (params.contains(entry.getKey())) {
 										float returnVal = (entry.getValue().apply(eState)).floatValue();
@@ -149,7 +150,6 @@ public class EEGServer implements Runnable {
 										}
 									}	
 								}
-
 								for (Entry<String, Function<Pointer, Float>> entry : affectivMap.entrySet()) {
 									if (params.contains(entry.getKey())) {
 										eegInput.addAffectiveArray(
@@ -166,7 +166,8 @@ public class EEGServer implements Runnable {
 										.setCognitiveAction(Input.EmotivEEGInput.CognitiveActionType.valueOf(cognitivMap.get(currentAction)))
 										.setPower(EmoState.INSTANCE.ES_CognitivGetCurrentActionPower(eState));
 								}
-								eegInput.build().writeTo(outToClient);
+								System.out.println(eegInput.build().toString());
+								eegInput.build().writeDelimitedTo(outToClient);
 								//outToClient.writeBytes(response.toString() + "\n"); //write to socket only at end*/
 							}
 						}
@@ -186,7 +187,5 @@ public class EEGServer implements Runnable {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
 	}
-
 }
